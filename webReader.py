@@ -26,9 +26,26 @@ def read_chapter(data):
         engine.say(line)
         engine.runAndWait()
     engine.stop()
-    
-url = "https://wuxianovels.org/rebirth-of-the-thief-who-roamed-the-world/{}"
-for i in range(225, 231):
-    print("Reading Chapter {}".format(i))
-    data = get_chapter(url.format(i))
-    read_chapter(data)
+
+def getLastRead():
+    with open("lastRead") as f:
+        last = f.read()
+    return last
+
+def storeLastRead(chapter):
+    with open("lastRead", 'w') as f:
+        f.write(chapter)
+
+def main():
+    base = "https://wuxianovels.org/{}/{}"
+    novel = "rebirth-of-the-thief-who-roamed-the-world"
+    # Chapter needs to change when the program starts each time
+    chapter = getLastRead()
+    numOfChapters = input("How many chapters do you want to read? ")
+    for i in range(chapter, chapter + numOfChapters):
+        url = base.format(novel, i)
+        print("Reading Chapter {}".format(i))
+        data = get_chapter(url)
+        read_chapter(data)
+    storeLastRead(chapter + numOfChapters)
+main()
