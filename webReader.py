@@ -28,7 +28,7 @@ def read_chapter(data):
     engine.stop()
     
 url = "https://wuxianovels.org/rebirth-of-the-thief-who-roamed-the-world/{}"
-for i in range(204, 206):
+for i in range(225, 231):
     print("Reading Chapter {}".format(i))
     data = get_chapter(url.format(i))
     read_chapter(data)
