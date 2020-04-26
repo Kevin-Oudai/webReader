@@ -28,12 +28,12 @@ def read_chapter(data):
     engine.stop()
 
 def getLastRead():
-    with open("lastRead") as f:
+    with open("lastRead.txt") as f:
         last = f.read()
     return last
 
 def storeLastRead(chapter):
-    with open("lastRead", 'w') as f:
+    with open("lastRead.txt", 'w') as f:
         f.write(chapter)
 
 def main():
