@@ -23,13 +23,14 @@ def read_chapter(data):
     engine.setProperty('rate', 300)
     engine.setProperty('volume', 1.5)
     for line in data:
+        print(line)
         engine.say(line)
         engine.runAndWait()
     engine.stop()
 
 def getLastRead():
     with open("lastRead.txt") as f:
-        last = f.read()
+        last = int(f.read())
     return last
 
 def storeLastRead(chapter):
@@ -41,11 +42,10 @@ def main():
     novel = "rebirth-of-the-thief-who-roamed-the-world"
     # Chapter needs to change when the program starts each time
     chapter = getLastRead()
-    numOfChapters = input("How many chapters do you want to read? ")
+    numOfChapters = int(input("How many chapters do you want to read? "))
     for i in range(chapter, chapter + numOfChapters):
         url = base.format(novel, i)
-        print("Reading Chapter {}".format(i))
         data = get_chapter(url)
         read_chapter(data)
-    storeLastRead(chapter + numOfChapters)
+    storeLastRead(str(chapter + numOfChapters))
 main()
