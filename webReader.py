@@ -40,7 +40,6 @@ def storeLastRead(chapter):
 def main():
     base = "https://wuxianovels.org/{}/{}"
     novel = "rebirth-of-the-thief-who-roamed-the-world"
-    # Chapter needs to change when the program starts each time
     chapter = getLastRead()
     numOfChapters = int(input("How many chapters do you want to read? "))
     for i in range(chapter, chapter + numOfChapters):
