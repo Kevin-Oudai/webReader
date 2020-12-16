@@ -28,6 +28,22 @@ def find_order():
 # Create Ordered Item
 
 
+def make_cake(flavor):
+    # Mold 953, 917
+    frosting = None
+    topping = None
+    if flavor == 'vanilla':
+        frosting = (1240, 623)
+    addMold = pyautogui.click(953, 917)
+    pyautogui.moveTo(frosting[0], frosting[1], MOUSE_SPEED)
+    pyautogui.dragTo(1057, 690, MOUSE_SPEED, button='left')
+    ovenCenter = OVEN_LOCATIONS[0]
+    pyautogui.dragTo(ovenCenter[0], ovenCenter[1],
+                     MOUSE_SPEED, button='left')
+    time.sleep(4.1)
+    return ovenCenter
+
+
 def create_order(item):
     print("**Creating: {}".format(item))
     if item == 'coffee.png':
@@ -42,18 +58,7 @@ def create_order(item):
         create_order.mscounter += 1
         return locateItem
     elif item == 'vanilla_cake.png':
-        addMold = pyautogui.locateOnScreen(
-            'items/served_items/cake_mold.png', confidence=CONF)
-        moldCenter = pyautogui.center(addMold)
-        pyautogui.click(moldCenter[0], moldCenter[1])
-        flavorCenter = (1240, 623)
-        pyautogui.moveTo(flavorCenter[0], flavorCenter[1], MOUSE_SPEED)
-        pyautogui.dragTo(1057, 690, MOUSE_SPEED, button='left')
-        ovenCenter = OVEN_LOCATIONS[0]
-        pyautogui.dragTo(ovenCenter[0], ovenCenter[1],
-                         MOUSE_SPEED, button='left')
-        time.sleep(4.1)
-        return ovenCenter
+        return make_cake('vanilla')
     else:
         return None
 
@@ -67,10 +72,10 @@ def serve_item(orderCenter, itemCenter):
 
 
 def collect_money():
-    print("****Collecting Money")
     locations = pyautogui.locateAllOnScreen(
         'items/served_items/money.png', confidence=CONF)
     for item in locations:
+        print("****Collecting Money")
         itemloc = pyautogui.center(item)
         pyautogui.click(itemloc[0], itemloc[1])
 # Main Control
