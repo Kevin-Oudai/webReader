@@ -11,20 +11,13 @@ MS_LOCATIONS = [(635, 703), (671, 617), (706, 537)]
 OVEN_LOCATIONS = [(1538, 567)]
 
 
-def restart_game():
-    restartButton = pyautogui.locateCenterOnScreen(
-        'items/served_items/restart.png')
-    pyautogui.click(restartButton[0], restartButton[1])
-
-
 def find_order():
     possibleItems = ['coffee.png', 'milk_shake.png', 'vanilla_cake.png']
     count = 0
     while True:
         collect_money()
-        if count % 20 == 0:
-            if pyautogui.locateCenterOnScreen('items/served_items/restart.png'):
-                restart_game()
+        if pyautogui.locateCenterOnScreen('items/served_items/restart.png'):
+            pyautogui.click(1360, 941)
         for item in possibleItems:
             searchFor = 'items/ordered_item/{}'.format(item)
             locateItem = pyautogui.locateOnScreen(searchFor, confidence=CONF)
