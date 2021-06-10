@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import json
 
 
 class Page:
@@ -63,18 +64,16 @@ class Page:
         Stores the page content for the current page URL.
         """
         if self.output:
-            filename = "chapters/{}.txt".format(self.name)
-            content = " ".join(self.content)
-            content = content.strip("\n")
-            with open(filename, 'w', encoding="utf-8") as f:
-                f.write(content)
+            filename = "chapters/{}.json".format(self.name)
+            content = self.get_data_as_dict()
+            with open(filename, 'w', encoding="utf-8") as file:
+                json.dump(content, file)
             print("{}Stored: {}".format(">" * 5, self.name))
         else:
-            filename = "chapters/{}.txt".format(self.name)
-            content = " ".join(self.content)
-            content = content.strip("\n")
-            with open(filename, 'w', encoding="utf-8") as f:
-                f.write(content)
+            filename = "chapters/{}.json".format(self.name)
+            content = self.get_data_as_dict()
+            with open(filename, 'w', encoding="utf-8") as file:
+                json.dump(content, file)
 
     def set_novel_info(self):
         """
