@@ -1,0 +1,11 @@
+{
+    "test-page": {
+        "title": "test-page",
+        "name": "test-page",
+        "url": "testpage.url",
+        "next": null,
+        "content": [
+            "This is a test page for the reader."
+        ]
+    }
+}

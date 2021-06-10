@@ -1,10 +1,10 @@
 import pyttsx3
-from Page
+import json
 
 
 class Reader:
 
-    def __init__(self, rate=280, volume=1.0, voice=1):
+    def __init__(self, page=None, rate=250, volume=1.0, voice=1):
         """
         self.rate       > Set the words per minute speech rate.
                           Minimum rate should be 125 words per minute
@@ -13,22 +13,24 @@ class Reader:
         self.rate = rate
         self.volume = volume
         self.voice = voice
-        self.page = None
+        self.page = page
         self.get_page()
 
     def get_page(self):
         with open("lastRead.txt", 'r', encoding='utf-8') as file:
-            filename = "{}.json".format(file.read())
+            name = file.read()
+            filename = "chapters/{}.json".format(name)
             with open(filename, 'r') as pageObject:
-                self.page = json.load(pageObject)
+                self.page = json.load(pageObject)[name]
 
-    def read_page(self, data):
+    def read_page(self):
         engine = pyttsx3.init()
         engine.setProperty('rate', self.rate)
         engine.setProperty('volume', self.volume)
-        engine.setProperty('voice', self.voice)
-        engine.say(self.page.name.replace('-', " "))
-        for line in self.page.content:
+        voices = engine.getProperty('voices')
+        engine.setProperty('voice', voices[self.voice].id)
+        engine.say(self.page['name'].replace('-', " "))
+        for line in self.page['content']:
             print(line)
             engine.say(line)
             engine.runAndWait()
@@ -36,7 +38,7 @@ class Reader:
         self.store_last_read()
 
     def store_last_read(self):
-        if self.page.next:
+        if self.page['next']:
             with open("lastRead.txt", 'w') as f:
                 f.write(self.page.next)
         else:
@@ -63,20 +65,6 @@ class Reader:
             self.rate = rate
 
 
-def main():
-    numOfChapters = int(input("How many chapters do you want to read? "))
-    i = 0
-    name = 2907
-    while i < numOfChapters:
-        chapter = "{}.txt".format(name)
-        result = get_chapter(chapter)
-        sym = len(chapter) + 11
-        print("\n")
-        print("#" * sym)
-        print(" Reading: {}".format(chapter))
-        print("#" * sym)
-        read_chapter(result)
-        name += 1
-
-
-main()
+if __name__ == "__main__":
+    a = Reader()
+    a.read_page()
