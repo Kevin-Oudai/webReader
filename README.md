@@ -28,7 +28,6 @@ and press enter. This will start striping the pages up to the most recent chapte
 ```
 python webReader.py
 ```
-
 and press enter. 
 
 9. Enter the amount of chapters you want read to you and press enter this will start the reader.
