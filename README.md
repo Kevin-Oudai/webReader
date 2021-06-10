@@ -1,6 +1,6 @@
 # Novel Full WebReader
 
-This is a python reader for novels on (Novel Full)[https://novelfull.com/].
+This is a python reader for novels on [Novel Full](https://novelfull.com/).
 
 ## How to use
 
@@ -12,7 +12,7 @@ This is a python reader for novels on (Novel Full)[https://novelfull.com/].
 pip install -r requirements.txt
 ```
 
-4. Go to (Novel Full)[https://novelfull.com/] and choose the first chapter of a novel. e.g. https://novelfull.com/library-of-heavens-path/chapter-1-swindler.html
+4. Go to [Novel Full](https://novelfull.com/) and choose the first chapter of a novel. e.g. https://novelfull.com/library-of-heavens-path/chapter-1-swindler.html
 5. Copy the text after '.com' into the file named lastRead.txt and save it.e.g. /library-of-heavens-path/chapter-1-swindler.html
 6. In the command prompt type
 
