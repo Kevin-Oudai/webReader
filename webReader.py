@@ -1,11 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
 import pyttsx3
+
 
 def get_chapter(name):
     loc = "chapters/{}".format(name)
     with open(loc, 'r', encoding='utf-8') as file:
         return file.read().split(".")
+
 
 def read_chapter(data):
     engine = pyttsx3.init()

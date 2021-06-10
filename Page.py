@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 class Page:
 
-    def __init__(self, url):
+    def __init__(self, url, output=False):
         """
         self.content    > Content of the current page.
         self.url        > URL of the current page.
@@ -12,6 +12,7 @@ class Page:
         self.title      > Title of the web novel.
         self.name       > Chapter number and name for the current page. 
         """
+        self.output = output
         self.content = []
         self.url = url
         self.next = ''
@@ -41,7 +42,10 @@ class Page:
         # Set next chapter url
         link = soup.find_all(
             "a", {"id": "next_chap"})[0].get('href')
-        self.next = "{}{}".format(self.url[:21], link)
+        if link:
+            self.next = "{}{}".format(self.url[:21], link)
+        else:
+            self.next = None
         # Set page content
         cutPoint = "© Copyright NovelFull.Com. All Rights Reserved."
         results = soup.find_all('p')
@@ -58,11 +62,19 @@ class Page:
         """
         Stores the page content for the current page URL.
         """
-        filename = "chapters/{}.txt".format(self.name)
-        content = " ".join(self.content)
-        content = content.strip("\n")
-        with open(filename, 'w', encoding="utf-8") as f:
-            f.write(content)
+        if self.output:
+            filename = "chapters/{}.txt".format(self.name)
+            content = " ".join(self.content)
+            content = content.strip("\n")
+            with open(filename, 'w', encoding="utf-8") as f:
+                f.write(content)
+            print("{}Stored: {}".format(">" * 5, self.name))
+        else:
+            filename = "chapters/{}.txt".format(self.name)
+            content = " ".join(self.content)
+            content = content.strip("\n")
+            with open(filename, 'w', encoding="utf-8") as f:
+                f.write(content)
 
     def set_novel_info(self):
         """
@@ -75,6 +87,20 @@ class Page:
         self.title = parts[4]
         self.name = parts[5]
         self.save_page_content()
+
+    def get_next(self):
+        return self.next
+
+    def get_data_as_dict(self):
+        d = {}
+        d[self.name] = {
+            'title': self.title,
+            'name': self.name,
+            'url': self.url,
+            'next': self.next,
+            'content': self.content
+        }
+        return d
 
     def __str__(self):
         text = " URL:\t\t{}\n".format(self.url)
