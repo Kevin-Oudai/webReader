@@ -20,6 +20,7 @@ class Page:
         self.next = ''
         self.title = ''
         self.name = ''
+        self.nextName = ''
         self.get_chapter()
 
     def get_chapter(self):
@@ -46,6 +47,7 @@ class Page:
             "a", {"id": "next_chap"})[0].get('href')
         if link:
             self.next = "{}{}".format(self.url[:21], link)
+            self.nextName = link.split('/')[-1].replace('.html', '')
         else:
             self.next = None
         # Set page content
@@ -69,18 +71,13 @@ class Page:
             os.makedirs(path)
         except OSError:
             if self.output:
-                print("Folder already exists")
-        if self.output:
-            filename = os.path.join(path, "{}.json".format(self.name))
-            content = self.get_data_as_dict()
-            with open(filename, 'w', encoding="utf-8") as file:
-                json.dump(content, file)
-            print("{}Stored: {}".format(">" * 5, self.name))
-        else:
-            filename = os.path.join(path, "{}.json".format(self.name))
-            content = self.get_data_as_dict()
-            with open(filename, 'w', encoding="utf-8") as file:
-                json.dump(content, file)
+                print("{}Folder already exists".format(">" * 5))
+        filename = os.path.join(path, "{}.json".format(self.name))
+        content = self.get_data_as_dict()
+        with open(filename, 'w', encoding="utf-8") as file:
+            json.dump(content, file)
+        print("{}\nStored: {}\n{}".format(
+            "<>" * len(self.name), self.name, "<>" * len(self.name)))
 
     def set_novel_info(self):
         """
@@ -102,6 +99,7 @@ class Page:
         d[self.name] = {
             'title': self.title,
             'name': self.name,
+            'nextName': self.nextName,
             'url': self.url,
             'next': self.next,
             'content': self.content

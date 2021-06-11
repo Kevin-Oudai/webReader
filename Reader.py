@@ -1,5 +1,6 @@
 import pyttsx3
 import json
+import os
 
 
 class Reader:
@@ -17,11 +18,14 @@ class Reader:
         self.get_page()
 
     def get_page(self):
-        with open("lastRead.txt", 'r', encoding='utf-8') as file:
-            name = file.read()
-            filename = "chapters/{}.json".format(name)
-            with open(filename, 'r') as pageObject:
-                self.page = json.load(pageObject)[name]
+        path = os.path.join(os.getcwd(), 'lastRead.txt')
+        with open(path, 'r', encoding='utf-8') as file:
+            title = file.readline().strip('\n')
+            name = file.readline().strip('\n')
+            filename = os.path.join(
+                os.getcwd(), 'novels', title, "{}.json".format(name))
+            with open(filename, 'r') as obj:
+                self.page = list(json.load(obj).values())[0]
 
     def read_page(self):
         engine = pyttsx3.init()
@@ -29,18 +33,21 @@ class Reader:
         engine.setProperty('volume', self.volume)
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[self.voice].id)
-        engine.say(self.page['name'].replace('-', " "))
+        intro = self.page['name'].replace('-', " ")
+        print(intro)
+        engine.say(intro)
         for line in self.page['content']:
             print(line)
             engine.say(line)
             engine.runAndWait()
         engine.stop()
-        self.store_last_read()
+        self.store_next()
 
-    def store_last_read(self):
+    def store_next(self):
         if self.page['next']:
             with open("lastRead.txt", 'w') as f:
-                f.write(self.page.next)
+                f.write("{}\n".format(self.page['title']))
+                f.write(self.page['nextName'])
         else:
             print("This is the last stored chapter")
 
