@@ -15,7 +15,11 @@ class Reader:
         self.volume = volume
         self.voice = voice
         self.page = page
+
+    def read_page(self):
         self.get_page()
+        self.start_engine()
+        self.store_next()
 
     def get_page(self):
         path = os.path.join(os.getcwd(), 'lastRead.txt')
@@ -27,7 +31,7 @@ class Reader:
             with open(filename, 'r') as obj:
                 self.page = list(json.load(obj).values())[0]
 
-    def read_page(self):
+    def start_engine(self):
         engine = pyttsx3.init()
         engine.setProperty('rate', self.rate)
         engine.setProperty('volume', self.volume)
@@ -41,10 +45,9 @@ class Reader:
             engine.say(line)
             engine.runAndWait()
         engine.stop()
-        self.store_next()
 
     def store_next(self):
-        if self.page['next']:
+        if self.page['nextName']:
             with open("lastRead.txt", 'w') as f:
                 f.write("{}\n".format(self.page['title']))
                 f.write(self.page['nextName'])

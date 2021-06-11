@@ -50,6 +50,7 @@ class Page:
             self.nextName = link.split('/')[-1].replace('.html', '')
         else:
             self.next = None
+            self.nextName = None
         # Set page content
         cutPoint = "© Copyright NovelFull.Com. All Rights Reserved."
         results = soup.find_all('p')
