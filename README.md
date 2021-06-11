@@ -12,28 +12,37 @@ This is a python reader for novels on [Novel Full](https://novelfull.com/).
 pip install -r requirements.txt
 ```
 
-4. Go to [Novel Full](https://novelfull.com/) and choose the first chapter of a novel. _e.g.https://novelfull.com/library-of-heavens-path/chapter-1-swindler.html_
-5. Copy the text after '.com' into the file named lastRead.txt and save it._e.g. /library-of-heavens-path/chapter-1-swindler.html_
-6. In the command prompt type
+4. Go to [Novel Full](https://novelfull.com/) and copy the url for the first chapter of a novel. e.g.
 
 ```
-python stripPages.py
+https://novelfull.com/library-of-heavens-path/chapter-1-swindler.html
 ```
 
-and press enter. This will start striping the pages up to the most recent chapter. 
-
-7. Once the this is finished open the file named webReader.py and ensure the name variable is set to 1. 
-8. In the command prompt type
+5. In the command prompt type
 
 ```
-python webReader.py
+python main.py
 ```
-and press enter. 
 
-9. Enter the amount of chapters you want read to you and press enter this will start the reader.
+and press enter. This will bring up the main menu.
+
+6. You will be presented with the following menu.
+
+```
+  1. Pull Chapters
+  2. Read Chapters
+  0. Exit
+  Enter a choice:
+```
+
+7. Press 1 and press enter. This will prompt you for the URL you copied in step 4.
+8. Hold Ctrl and press 'v' to paste the URL and press enter. This will start pulling the chapters and storing them locally.
+
+9. When the chapters are pulled the menu seen in step 6 will show again. You can choose to exit or start reader.
 
 ## Notes
 
-- The name variable in webReader.py needs to be changed to the chapter number you wish to start from everytime you close the reader.
+- You can modify the chapter you wish to start reading from manually by going into the novels folder and open the folder for the title you wish to read then open the corresponding JSON file. Copy the title and the nextName into the lastRead.txt file one per line.
 - You can pause the reader by clicking anywhere in the command prompt.
-- This is the first version of the reader so it is not very user friendly as the project progressed this will be fixed.ew
+- This is the cleaned version of the reader. If you have any suggestions for the reader open an issue and I will work on it
+- I will not make a GUI for the application until I am satisfied how the program works with the console.
