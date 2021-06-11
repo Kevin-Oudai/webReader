@@ -1,3 +1,5 @@
 *.txt
 *.pyc
-/_pycache_/
+/chapters/
+/novels/
+__pycache__
