@@ -42,7 +42,7 @@ and press enter. This will bring up the main menu.
 
 ## Notes
 
-- You can modify the chapter you wish to start reading from manually by going into the novels folder and open the folder for the title you wish to read then open the corresponding JSON file. Copy the title and the nextName into the lastRead.txt file one per line.
+- You can modify the chapter you wish to start reading from manually by going into the novels folder and open the folder for the title you wish to read then open the corresponding JSON file. Copy the title and the nextName into the lastRead.txt file one per line. Save the file and the start main.py and choose option 2.
 - You can pause the reader by clicking anywhere in the command prompt.
 - This is the cleaned version of the reader. If you have any suggestions for the reader open an issue and I will work on it
 - I will not make a GUI for the application until I am satisfied how the program works with the console.
