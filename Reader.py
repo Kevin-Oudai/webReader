@@ -56,7 +56,7 @@ class Reader:
     def store_next(self, i):
         if self.page['nextName']:
             with open(self.lastPath, 'w') as f:
-                if self.index == self.last:
+                if i == self.last:
                     f.write("{}\n".format(self.page['title']))
                     f.write("{}\n".format(self.page['nextName']))
                     f.write(str(0))
