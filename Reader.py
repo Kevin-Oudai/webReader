@@ -5,7 +5,7 @@ import os
 
 class Reader:
 
-    def __init__(self, page=None, rate=250, volume=1.0, voice=1):
+    def __init__(self, title, page=None, rate=250, volume=1.0, voice=1):
         """
         self.rate       > Set the words per minute speech rate.
                           Minimum rate should be 125 words per minute
@@ -15,6 +15,9 @@ class Reader:
         self.volume = volume
         self.voice = voice
         self.page = page
+        self.title = title
+        self.lastPath = os.path.join(
+            os.getcwd(), 'novels', self.title, 'lastRead.txt')
 
     def read_page(self):
         self.get_page()
@@ -22,8 +25,7 @@ class Reader:
         self.store_next()
 
     def get_page(self):
-        path = os.path.join(os.getcwd(), 'lastRead.txt')
-        with open(path, 'r', encoding='utf-8') as file:
+        with open(self.lastPath, 'r', encoding='utf-8') as file:
             title = file.readline().strip('\n')
             name = file.readline().strip('\n')
             filename = os.path.join(
@@ -48,7 +50,7 @@ class Reader:
 
     def store_next(self):
         if self.page['nextName']:
-            with open("lastRead.txt", 'w') as f:
+            with open(self.lastPath, 'w') as f:
                 f.write("{}\n".format(self.page['title']))
                 f.write(self.page['nextName'])
         else:
@@ -76,5 +78,5 @@ class Reader:
 
 
 if __name__ == "__main__":
-    a = Reader()
+    a = Reader(title='test-novel')
     a.read_page()
