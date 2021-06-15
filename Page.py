@@ -12,7 +12,7 @@ class Page:
         self.url        > URL of the current page.
         self.next       > URL of the next page linked to the current page.
         self.title      > Title of the web novel.
-        self.name       > Chapter number and name for the current page. 
+        self.name       > Chapter number and name for the current page.
         """
         self.output = output
         self.content = []
@@ -78,7 +78,7 @@ class Page:
         with open(filename, 'w', encoding="utf-8") as file:
             json.dump(content, file)
         print("{}\nStored: {}\n{}".format(
-            "<>" * len(self.name), self.name, "<>" * len(self.name)))
+            ">" * (len(self.name) + 8), self.name, "<" * (len(self.name) + 8)))
 
     def set_novel_info(self):
         """
