@@ -18,16 +18,18 @@ class Reader:
         self.title = title
         self.lastPath = os.path.join(
             os.getcwd(), 'novels', self.title, 'lastRead.txt')
+        self.index = 0
+        self.last = 0
 
     def read_page(self):
         self.get_page()
         self.start_engine()
-        self.store_next()
 
     def get_page(self):
         with open(self.lastPath, 'r', encoding='utf-8') as file:
             title = file.readline().strip('\n')
             name = file.readline().strip('\n')
+            self.index = int(file.readline().strip('\n'))
             filename = os.path.join(
                 os.getcwd(), 'novels', title, "{}.json".format(name))
             with open(filename, 'r') as obj:
@@ -42,17 +44,26 @@ class Reader:
         intro = self.page['name'].replace('-', " ")
         print(intro)
         engine.say(intro)
-        for line in self.page['content']:
+        self.last = len(self.page['content']) - 1
+        for i in range(self.index, len(self.page['content'])):
+            self.store_next(i)
+            line = self.page['content'][i]
             print(line)
             engine.say(line)
             engine.runAndWait()
         engine.stop()
 
-    def store_next(self):
+    def store_next(self, i):
         if self.page['nextName']:
             with open(self.lastPath, 'w') as f:
-                f.write("{}\n".format(self.page['title']))
-                f.write(self.page['nextName'])
+                if i == self.last:
+                    f.write("{}\n".format(self.page['title']))
+                    f.write("{}\n".format(self.page['nextName']))
+                    f.write(str(0))
+                else:
+                    f.write("{}\n".format(self.page['title']))
+                    f.write("{}\n".format(self.page['name']))
+                    f.write(str(i))
         else:
             print("This is the last stored chapter")
 
