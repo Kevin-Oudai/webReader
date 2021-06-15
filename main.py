@@ -1,5 +1,6 @@
 from Page import Page
 from Reader import Reader
+import os
 
 
 def pull():
@@ -12,14 +13,21 @@ def pull():
         else:
             print("End of chapters")
 
-    with open("lastRead.txt", 'w') as info:
+    path = os.path.join(os.getcwd(), 'novels', firstPage.title, "lastRead.txt")
+    with open(path, 'w', encoding='utf-8') as info:
         info.write("{}\n".format(firstPage.title))
         info.write(firstPage.name)
 
 
 def read():
+    path = os.path.join(os.getcwd(), 'novels')
+    novels = os.listdir(path)
+    for index, novel in enumerate(novels):
+        print("{}. {}".format(index + 1, novel))
+    choice = int(input("Choose a title: "))
+    title = novels[choice - 1]
     numOfChapters = int(input("How many chapters do you want me to read?"))
-    reader = Reader()
+    reader = Reader(title)
     for i in range(numOfChapters):
         reader.read_page()
 
