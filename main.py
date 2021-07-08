@@ -16,8 +16,8 @@ def pull():
     path = os.path.join(os.getcwd(), 'novels', firstPage.title, "lastRead.txt")
     with open(path, 'w', encoding='utf-8') as info:
         info.write("{}\n".format(firstPage.title))
-        info.write(firstPage.name)
-        info.write(0)
+        info.write("{}\n".format(firstPage.name))
+        info.write(str(0))
 
 
 def read():
