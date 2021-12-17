@@ -1,4 +1,4 @@
-import requests
+import httpx
 from bs4 import BeautifulSoup
 import json
 import os
@@ -27,7 +27,7 @@ class Page:
         """
         Grabs the page content from novelfull.com to be processed
         """
-        response = requests.get(self.url)
+        response = httpx.get(self.url)
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, "html.parser")
             self.process_response(soup)
