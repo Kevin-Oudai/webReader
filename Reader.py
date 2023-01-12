@@ -34,6 +34,7 @@ class Reader:
                 os.getcwd(), 'novels', title, "{}.json".format(name))
             with open(filename, 'r') as obj:
                 self.page = list(json.load(obj).values())[0]
+        self.start_engine()
 
     def start_engine(self):
         engine = pyttsx3.init()
@@ -41,29 +42,28 @@ class Reader:
         engine.setProperty('volume', self.volume)
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[self.voice].id)
-        intro = self.page['name'].replace('-', " ")
-        print(intro)
-        engine.say(intro)
         self.last = len(self.page['content']) - 1
+        line = []
         for i in range(self.index, len(self.page['content'])):
             self.store_next(i)
-            line = self.page['content'][i]
-            print(line)
-            engine.say(line)
-            engine.runAndWait()
-        engine.stop()
+            line.append(self.page['content'][i])
+        filename = "{}.mp3".format(self.page['name'])
+        engine.save_to_file("".join(line), filename)
+        print("Saving: {}".format(filename))
+        engine.runAndWait()
 
     def store_next(self, i):
+        with open(self.lastPath, 'w') as f:
+            if i == self.last:
+                f.write("{}\n".format(self.page['title']))
+                f.write("{}\n".format(self.page['nextName']))
+                f.write(str(0))
+            else:
+                f.write("{}\n".format(self.page['title']))
+                f.write("{}\n".format(self.page['name']))
+                f.write(str(i))
         if self.page['nextName']:
-            with open(self.lastPath, 'w') as f:
-                if i == self.last:
-                    f.write("{}\n".format(self.page['title']))
-                    f.write("{}\n".format(self.page['nextName']))
-                    f.write(str(0))
-                else:
-                    f.write("{}\n".format(self.page['title']))
-                    f.write("{}\n".format(self.page['name']))
-                    f.write(str(i))
+            pass
         else:
             print("This is the last stored chapter")
 
@@ -78,8 +78,8 @@ class Reader:
     def set_rate(self):
         try:
             rate = int(input("Enter words per minute reading rate: "))
-        except BaseException as err:
-            print("Message: {}".format(err.message))
+        except ValueError:
+            print("Please enter a valid number.")
             self.set_rate()
         if rate <= 0:
             print("Please enter a value greater than 0")
