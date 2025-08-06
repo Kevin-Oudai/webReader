@@ -1,107 +1,68 @@
-# Novel Full WebReader
+# WebReader
 
-This is a python reader for novels on [Novel Full](https://novelfull.com/).
+A simple command-line application for reading plain text files. The reader
+splits files into pages, remembers your last read position for each book and
+supports configurable page sizes.
 
-## Setup
+## Key Features
 
-### Download Zip
+- Remembers the last page read for multiple files
+- Configurable number of lines per page
+- Jump to a specific page or reset your progress
+- Loads optional defaults from a `.env` file
 
-1. Download the project as a zip file and unzip it in the desired folder
-2. Open a **command prompt** or **terminal** and navigate to the folder containing the project files.
-3. Install the requirements by typing
+## Installation
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
-in the **command prompt** or **terminal** then press enter.
+## Usage
 
-```
-https://novelfull.com/library-of-heavens-path/chapter-1-swindler.html
-```
-
-### Cloning the Source Code
-
-1. Copy the git url for this repository
-
-```
-https://github.com/Kevin-Oudai/webReader.git
+```bash
+python main.py --file path/to/book.txt
 ```
 
-2. Open a **command prompt** or **terminal** and navigate to the folder in which you wish to save the source code.
-3. Type
+### Options
 
-```
-git clone https://github.com/Kevin-Oudai/webReader.git
-```
+- `--goto <page>` – start from a specific page (0 indexed)
+- `--reset` – reset stored progress for the file
+- `--page-size <lines>` – override number of lines per page
 
-and press enter.
+The application stores progress in `last_read.json`. Each entry maps a file
+path to the next page that should be displayed.
 
-2. When the files a finished copying install the requirements by typing
+### Example
 
-```
-pip install -r requirements.txt
-```
-
-in the **command prompt** or **terminal** then press enter.
-
-## How to Use
-
-### Downloading a Title
-
-1. Open a **command prompt** or **terminal** and navigate to the folder with the source code
-2. Type
-
-```
-python main.py
+```bash
+python main.py --file book.txt --page-size 20
 ```
 
-and press enter. This will bring up the main menu. You will be presented with the following menu.
+## How it Works
 
-```
-  1. Pull Chapters
-  2. Read Chapters
-  0. Exit
-  Enter a choice:
-```
+After each page is displayed, the reader saves the next page number to
+`last_read.json`. When you restart the program with the same file it resumes
+from where you left off.
 
-3. If you are running the program for the first time press 1 and press enter.
-4. Go to [Novel Full](https://novelfull.com/) and copy the url for the first chapter of a novel you wish to read. e.g.
+## Limitations
 
-```
-https://novelfull.com/library-of-heavens-path/chapter-1-swindler.html
-```
+- Only plain text files are supported.
+- Page numbers are zero based when using `--goto`.
+- `last_read.json` may grow if many unique file paths are used.
 
-5. Hold Ctrl and press 'v' to paste the URL and press enter. This will start pulling the chapters and storing them locally.
-6. After the chapters are finished pulling you can also pull chapters from other titles by repeating step 3 to 5 or start from step 1 if you closed the terminal.
+## Configuration
 
-### Reading a Title
+Copy `.env.example` to `.env` and adjust values:
 
-1. Open a **command prompt** or **terminal** and navigate to the folder with the source code
-2. Type
-
-```
-python main.py
+```env
+PAGE_SIZE=25
+STATE_FILE=last_read.json
 ```
 
-and press enter. This will bring up the main menu. You will be presented with the following menu.
+## Testing
 
+Run the unit tests with:
+
+```bash
+pytest
 ```
-  1. Pull Chapters
-  2. Read Chapters
-  0. Exit
-  Enter a choice:
-```
-
-3. Press 2 and then press enter.
-4. You will be presented with a menu showing all the titles you downloaded.
-5. Select a title by entering the corresponding number.
-6. Enter the number of chapters you want read to you and press enter.
-
-## Notes
-
-- You can modify the chapter you wish to start reading from manually by going into the novels folder and open the folder for the title you wish to read then open the corresponding JSON file. Copy the title, the name and 0 (zero) into the lastRead.txt file one per line. Save the file and the start main.py and choose option 2.
-- You can pause the reader by clicking anywhere in the command prompt.
-- You can close the reader whenever you wish. When you continue reading that title again it will continue from the last line that was being read when you closed the program.
-- This is the cleaned version of the reader. If you have any suggestions for the reader open an issue and I will work on it
-- I will not make a GUI for the application until I am satisfied with the console version of the program.

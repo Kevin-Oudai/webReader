@@ -1,49 +1,55 @@
-from Page import Page
+"""Command line interface for the text reader."""
+
+import argparse
+import logging
+
 from Reader import Reader
-import os
 
 
-def pull():
-    url = str(input("Enter the url for the first page of the reader: "))
-    firstPage = Page(url)
-    page = firstPage
-    while page.get_next():
-        if page.get_next():
-            page = Page(page.get_next())
-        else:
-            print("End of chapters")
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments."""
 
-    path = os.path.join(os.getcwd(), 'novels', firstPage.title, "lastRead.txt")
-    with open(path, 'w', encoding='utf-8') as info:
-        info.write("{}\n".format(firstPage.title))
-        info.write("{}\n".format(firstPage.name))
-        info.write(str(0))
+    parser = argparse.ArgumentParser(description="Read a text file page by page")
+    parser.add_argument("--file", "-f", dest="file_path", required=True,
+                        help="Path to the text file to read")
+    parser.add_argument("--goto", "-g", dest="goto", type=int,
+                        help="Jump to a specific page number (0-indexed)")
+    parser.add_argument("--reset", action="store_true",
+                        help="Reset stored reading position for the file")
+    parser.add_argument("--page-size", type=int,
+                        help="Number of lines to show per page")
+    return parser.parse_args()
 
 
-def read():
-    path = os.path.join(os.getcwd(), 'novels')
-    novels = os.listdir(path)
-    for index, novel in enumerate(novels):
-        print("{}. {}".format(index + 1, novel))
-    choice = int(input("Choose a title: "))
-    title = novels[choice - 1]
-    numOfChapters = int(input("How many chapters do you want me to read?"))
-    reader = Reader(title)
-    for i in range(numOfChapters):
-        reader.read_page()
+def main() -> None:
+    """Entry point for the command line interface."""
+
+    logging.basicConfig(level=logging.INFO)
+    args = parse_args()
+    reader = Reader(args.file_path, page_size=args.page_size or Reader.page_size)
+
+    if args.reset:
+        reader.reset()
+
+    if args.goto is not None:
+        try:
+            reader.goto(args.goto)
+        except ValueError as exc:
+            print(f"Error: {exc}")
+            return
+
+    try:
+        while True:
+            print(reader.read())
+            if reader.current_page >= len(reader.pages):
+                break
+            command = input("Press Enter for next page or 'q' to quit: ").strip().lower()
+            if command == 'q':
+                break
+    except FileNotFoundError as exc:
+        print(f"Error: {exc}")
 
 
-while True:
-    print("  1. Pull Chapters")
-    print("  2. Read Chapters")
-    print("  0. Exit")
-    choice = int(input("  Enter a choice: "))
-    if choice == 1:
-        pull()
-    elif choice == 2:
-        read()
-    elif choice == 0:
-        break
-    else:
-        print("   Error!!!")
-        print("   Try again")
+if __name__ == "__main__":
+    main()
+
