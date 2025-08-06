@@ -1,4 +1,3 @@
-*.txt
 *.pyc
 /chapters/
 /novels/
@@ -6,3 +5,4 @@ __pycache__
 lastRead.txt
 .vs
 *.mp3
+.env
