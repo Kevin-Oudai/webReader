@@ -1,4 +1,4 @@
 beautifulsoup4==4.8.0
 pyttsx3==2.87
 pywin32==301
-httpx==0.21.1
+httpx==0.23.0
